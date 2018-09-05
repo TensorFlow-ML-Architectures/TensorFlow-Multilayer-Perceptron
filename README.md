@@ -2,15 +2,18 @@
 
 Confusion Matrix:
 ![Confusion Matrix][CM]
-[CM]: https://github.com/ECE-Engineer/TensorFlow-Multilayer-Perceptron/plot.png "Confusion Matrix"
+
+[CM]: https://raw.githubusercontent.com/ECE-Engineer/TensorFlow-Multilayer-Perceptron/master/plot.jpg "Confusion Matrix"
 
 Accuracy Plot:
 ![Accuracy Plot][AP]
-[AP]: https://github.com/ECE-Engineer/TensorFlow-Multilayer-Perceptron/acc.jpg "Accuracy Plot"
+
+[AP]: https://raw.githubusercontent.com/ECE-Engineer/TensorFlow-Multilayer-Perceptron/master/acc.jpg "Accuracy Plot"
 
 Loss Plot:
 ![Loss Plot][LP]
-[LP]: https://github.com/ECE-Engineer/TensorFlow-Multilayer-Perceptron/loss.jpg "Loss Plot"
+
+[LP]: https://raw.githubusercontent.com/ECE-Engineer/TensorFlow-Multilayer-Perceptron/master/loss.jpg "Loss Plot"
 
 ## Extras
 * Dropout
@@ -19,12 +22,15 @@ Loss Plot:
 
 Confusion Matrix (w/ Extra Configurations):
 ![Confusion Matrix][CM1]
-[CM1]: https://github.com/ECE-Engineer/TensorFlow-Multilayer-Perceptron/plot1.png "Confusion Matrix"
+
+[CM1]: https://raw.githubusercontent.com/ECE-Engineer/TensorFlow-Multilayer-Perceptron/master/plot1.jpg "Confusion Matrix"
 
 Accuracy Plot (w/ Extra Configurations):
 ![Accuracy Plot][AP1]
-[AP1]: https://github.com/ECE-Engineer/TensorFlow-Multilayer-Perceptron/acc1.jpg "Accuracy Plot"
+
+[AP1]: https://raw.githubusercontent.com/ECE-Engineer/TensorFlow-Multilayer-Perceptron/master/acc1.jpg "Accuracy Plot"
 
 Loss Plot (w/ Extra Configurations):
 ![Loss Plot][LP1]
-[LP1]: https://github.com/ECE-Engineer/TensorFlow-Multilayer-Perceptron/loss1.jpg "Loss Plot"
+
+[LP1]: https://raw.githubusercontent.com/ECE-Engineer/TensorFlow-Multilayer-Perceptron/master/loss1.jpg "Loss Plot"
