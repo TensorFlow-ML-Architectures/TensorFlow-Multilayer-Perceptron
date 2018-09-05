@@ -5,3 +5,4 @@ A plain vanilla Multilayer Perceptron.
 * accuracy and loss plots will be added
 * dropout will be added
 * regularization will be added
+* other weight initializations will be tested
