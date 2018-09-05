@@ -1,5 +1,10 @@
 # TensorFlow-Multilayer-Perceptron
 
+Fully Connected Neural Network:
+![Confusion Matrix][MLP]
+
+[MLP]: https://raw.githubusercontent.com/ECE-Engineer/TensorFlow-Multilayer-Perceptron/master/MLP.png "Confusion Matrix"
+
 Confusion Matrix:
 ![Confusion Matrix][CM]
 
