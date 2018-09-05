@@ -3,7 +3,7 @@
 Confusion Matrix:
 ![Confusion Matrix][CM]
 
-[CM]: https://raw.githubusercontent.com/ECE-Engineer/TensorFlow-Multilayer-Perceptron/master/plot.jpg "Confusion Matrix"
+[CM]: https://raw.githubusercontent.com/ECE-Engineer/TensorFlow-Multilayer-Perceptron/master/plot.png "Confusion Matrix"
 
 Accuracy Plot:
 ![Accuracy Plot][AP]
@@ -23,7 +23,7 @@ Loss Plot:
 Confusion Matrix (w/ Extra Configurations):
 ![Confusion Matrix][CM1]
 
-[CM1]: https://raw.githubusercontent.com/ECE-Engineer/TensorFlow-Multilayer-Perceptron/master/plot1.jpg "Confusion Matrix"
+[CM1]: https://raw.githubusercontent.com/ECE-Engineer/TensorFlow-Multilayer-Perceptron/master/plot1.png "Confusion Matrix"
 
 Accuracy Plot (w/ Extra Configurations):
 ![Accuracy Plot][AP1]
