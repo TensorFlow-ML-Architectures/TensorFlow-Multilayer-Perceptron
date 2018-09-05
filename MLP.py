@@ -70,16 +70,20 @@ def encodeLabels(labels_decoded):
 
 def weight_variable(shape):
   # uses default std. deviation
-  initial = tf.truncated_normal(shape, stddev=0.1)
+  initial = tf.random_normal(shape)
   return tf.Variable(initial)
 
 def bias_variable(shape):
   # uses default bias
-  initial = tf.constant(0.1, shape=shape)
+  initial = tf.random_normal(shape)
   return tf.Variable(initial)
 
 def multilayer_perceptron(x):
 	x_image = tf.reshape(x, [-1, data_width*data_height])
+	
+	# Define Regularizer
+	regularizer = tf.keras.constraints.MaxNorm(max_value=2)
+	
 	weights = {
 			'h1': weight_variable([data_width*data_height, n_hidden_1]),    #784x256
 			'h2': weight_variable([n_hidden_1, n_hidden_2]), #256x256
@@ -92,17 +96,27 @@ def multilayer_perceptron(x):
 	}
 
 	# Hidden layer 1 with RELU activation
-	layer_1 = tf.add(tf.matmul(x_image, weights['h1']), biases['b1']) #(x*weights['h1']) + biases['b1']
+	layer_1 = tf.add(tf.matmul(x_image, regularizer.__call__(w=weights['h1'])), biases['b1'])
 	layer_1 = tf.nn.relu(layer_1)
 	
 	# Hidden layer with RELU activation     
-	layer_2 = tf.add(tf.matmul(layer_1, weights['h2']), biases['b2']) # (layer_1 * weights['h2']) + biases['b2'] 
+	layer_2 = tf.add(tf.matmul(layer_1, regularizer.__call__(w=weights['h2'])), biases['b2'])
 	layer_2 = tf.nn.relu(layer_2)
+	
+	# Batch Norm
+	batch_norm = tf.layers.batch_normalization(layer_2,momentum=0.1,epsilon=1e-5)
+	
+  # Dropout
+	keep_prob = tf.placeholder(tf.float32, name = "keep_prob")
+	layer_2_drop = tf.nn.dropout(batch_norm, keep_prob)
+
+	# Max Norm
+	regularizer = tf.keras.constraints.MaxNorm(max_value=0.5)
 
 	# Output layer with linear activation    
-	out_layer = tf.matmul(layer_2, weights['out']) + biases['out'] # (layer_2 * weights['out']) + biases['out']    
+	out_layer = tf.nn.softmax(tf.matmul(layer_2_drop, regularizer.__call__(w=weights['out'])) + biases['out'], name = "y_conv")
 	
-	return out_layer
+	return out_layer, keep_prob
 
 # Create a method to run the model, save it, & get statistics
 def run_model():
@@ -149,7 +163,7 @@ def run_model():
   y_ = tf.placeholder(tf.int8, [None, label_count], name = "y_")
 
   # Build the graph for the deep net
-  y_conv = multilayer_perceptron(x)
+  y_conv, keep_prob = multilayer_perceptron(x)
 
   # Create loss op
   cross_entropy = tf.reduce_mean(
@@ -185,7 +199,7 @@ def run_model():
       if i % 100 == 0:
         validation_batch = sess.run(test_next_element)
         summary, acc = sess.run([merged, accuracy], feed_dict={
-            x: validation_batch[0], y_: validation_batch[1]})
+            x: validation_batch[0], y_: validation_batch[1], keep_prob: 1.0})
         print('step ' + str(i) + ', test accuracy ' + str(acc))
         # Save the model
         saver.save(sess, log_dir + generic_slash + "tensorflow" + generic_slash + "mnist_model.ckpt")
@@ -195,7 +209,7 @@ def run_model():
       print("epoch " + str(i))
       batch = sess.run(train_next_element)
       summary, _ = sess.run([merged, train_step], feed_dict={
-          x: batch[0], y_: batch[1]})
+          x: batch[0], y_: batch[1], keep_prob: 0.5})
       train_writer.add_summary(summary, i)
       train_writer.flush()
     # Evaluate over the entire test dataset
@@ -208,7 +222,7 @@ def run_model():
     # Run for final accuracy
     validation_batch = sess.run(test_next_element)
     print('Final Accuracy ' + str(accuracy.eval(feed_dict={
-        x: validation_batch[0], y_: validation_batch[1]})))
+        x: validation_batch[0], y_: validation_batch[1], keep_prob: 1.0})))
     print("FINISHED")
     
     # Re-initialize
@@ -219,7 +233,7 @@ def run_model():
     
     print("Creating Confusion Matrix")
     predict, correct = sess.run([CNN_prediction_label, actual_label], feed_dict={
-        x: validation_batch[0], y_: validation_batch[1]})
+        x: validation_batch[0], y_: validation_batch[1], keep_prob: 1.0})
     skplt.metrics.plot_confusion_matrix(correct, predict, normalize=True)
     plt.savefig(log_dir + generic_slash + "tensorflow" + generic_slash + "plot.png")
     
@@ -240,6 +254,8 @@ def graph_loader():
     y_ = graph.get_tensor_by_name("y_:0")
     global y_conv
     y_conv = graph.get_tensor_by_name("y_conv:0")
+    global keep_prob
+    keep_prob = graph.get_tensor_by_name("keep_prob:0")
 
 
 # RUN THE PROGRAM
