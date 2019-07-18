@@ -3,7 +3,7 @@
 Fully Connected Neural Network:
 ![Confusion Matrix][MLP]
 
-[MLP]: https://raw.githubusercontent.com/ECE-Engineer/TensorFlow-Multilayer-Perceptron/master/MLP.png "Confusion Matrix"
+[MLP]: https://raw.githubusercontent.com/ECE-Engineer/TensorFlow-Multilayer-Perceptron/master/MLP.png "Multilayer Perceptron"
 
 Confusion Matrix:
 ![Confusion Matrix][CM]
