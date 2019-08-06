@@ -222,6 +222,7 @@ def run_model():
     sess.run(test_iterator.initializer)
 
     # Evaluate over the entire test dataset
+    validation_batch = sess.run(test_next_element)
     print("Creating Confusion Matrix")
     predict, correct, acc, cross_entropy = sess.run([pred_label, actual_label, accuracy, loss], feed_dict={
         x: validation_batch[0], y_: validation_batch[1], keep_prob: 1.0})
