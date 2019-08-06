@@ -131,6 +131,10 @@ def run_model():
   train_y = encodeLabels(train_y)
   test_y = encodeLabels(test_y)
 
+  print("Size of:")
+  print("- Training-set:\t\t{}".format(total_train_data))
+  print("- Validation-set:\t{}".format(total_test_data))
+
   print("Creating Datasets")
   # Create the DATASETs
   train_x_dataset = tf.data.Dataset.from_tensor_slices(train_x)
@@ -175,9 +179,6 @@ def run_model():
   # Create accuracy op
   accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
   tf.summary.scalar('accuracy', accuracy)
-
-  print("Train data amount -> " + str(total_train_data))
-  print("Test data amount -> " + str(total_test_data))
 
   # Initialize and Run
   with tf.Session() as sess:
