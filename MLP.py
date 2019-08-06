@@ -88,12 +88,12 @@ def multilayer_perceptron(x):
   weights = {
     'h1': weight_variable([data_width*data_height, n_hidden_1], 1/tf.sqrt(float(data_width*data_height))),    #784x256
     'h2': weight_variable([n_hidden_1, n_hidden_2], 1/tf.sqrt(float(n_hidden_1))),                            #256x256
-    'out': weight_variable([n_hidden_2, label_count], 1/tf.sqrt(float(n_hidden_2)))                          #256x10
+    'out': weight_variable([n_hidden_2, label_count], 1/tf.sqrt(float(n_hidden_2)))                           #256x10
   }
   biases = {
     'b1': bias_variable([n_hidden_1]),             #256x1
     'b2': bias_variable([n_hidden_2]),             #256x1
-    'out': bias_variable([label_count])              #10x1
+    'out': bias_variable([label_count])            #10x1
   }
 
   # Hidden layer 1 with RELU activation
@@ -166,11 +166,11 @@ def run_model():
   tf.summary.scalar('loss', loss)
 
   # Create train (adam-optimizer) op
-  train = tf.train.AdamOptimizer(learning_rate).minimize(loss)
+  train = tf.train.AdamOptimizer(learning_rate, name='adam_op').minimize(loss)
 
-  pred_label = tf.argmax(ann, 1)
-  actual_label = tf.argmax(y_, 1)
-  correct_prediction = tf.equal(pred_label, actual_label)
+  pred_label = tf.argmax(ann, 1, name='pred_label')
+  actual_label = tf.argmax(y_, 1, name='actual_label')
+  correct_prediction = tf.equal(pred_label, actual_label, name='correct_prediction')
 
   # Create accuracy op
   accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
@@ -228,24 +228,6 @@ def run_model():
     skplt.metrics.plot_confusion_matrix(correct, predict, normalize=True)
     plt.savefig(log_dir + generic_slash + "tensorflow" + generic_slash + "plot.png")
     print("FINISHED")
-    
-# Create a loader for the graph
-def graph_loader():
-  with tf.Session() as sess:
-    #load the graph
-    restore_saver = tf.train.import_meta_graph(log_dir + generic_slash + "tensorflow" + generic_slash + "mnist_model.ckpt")
-    #reload all the params to the graph
-    restore_saver.restore(sess, tf.train.latest_checkpoint(log_dir))
-    global model
-    model = tf.get_default_graph()
-    
-    #store the variables
-    global x
-    x = graph.get_tensor_by_name("x:0")
-    global y_
-    y_ = graph.get_tensor_by_name("y_:0")
-    global ann
-    ann = graph.get_tensor_by_name("ann:0")
 
 # RUN THE PROGRAM
 run_model()
